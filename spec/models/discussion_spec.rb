@@ -6,6 +6,7 @@ RSpec.describe Discussion, type: :model do
   it { should have_many(:agreements).dependent(:destroy) }
   it { should have_many(:avatars).dependent(:destroy) }
   it { should belong_to(:user) }
+  
   # Validation tests
   # ensure columns are present before saving
   it { should validate_presence_of(:topicTitle) }

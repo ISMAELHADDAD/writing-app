@@ -1,4 +1,9 @@
 class User < ApplicationRecord
-  has_many :discussions
-  has_many :avatars
+
+  # model associations
+  has_many :discussions, dependent: :destroy
+  has_many :avatars, dependent: :destroy
+
+  # validations
+  validates_presence_of :name
 end
