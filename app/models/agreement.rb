@@ -5,6 +5,6 @@ class Agreement < ApplicationRecord
   belongs_to :discussion
 
   # validations
-  validates_presence_of :content, :isAccepted, :isAgree
+  validates_presence_of :content
 
 end
