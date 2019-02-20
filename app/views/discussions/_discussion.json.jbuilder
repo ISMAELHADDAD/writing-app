@@ -2,7 +2,7 @@ json.extract! discussion, :id, :topicTitle, :topicDescription
 json.owner_UserID discussion.user.id
 
 json.arguments discussion.arguments.each do |argument|
-  json.extract! argument, :num, :content, :publish_time
+  json.extract! argument, :id, :num, :content, :publish_time
   json.from_AvatarID argument.avatar.id
   json.from_AvatarName argument.avatar.name
 end
