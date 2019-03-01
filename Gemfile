@@ -29,7 +29,12 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'rack-cors'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.8'
+  # The basics
+  gem 'minitest'
+  gem 'minitest-rails'
+
+  # For better display
+  gem 'minitest-reporters'
   # Use sqlite3 as the database for Active Record
   gem 'sqlite3', '~> 1.3.6'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -44,10 +49,8 @@ group :development do
 end
 
 group :test do
-  gem 'factory_bot_rails', '~> 4.0'
   gem 'shoulda-matchers', '4.0.0.rc1'
-  gem 'faker'
-  gem 'database_cleaner'
+  gem 'minitest-matchers_vaccine'
 end
 
 group :production do

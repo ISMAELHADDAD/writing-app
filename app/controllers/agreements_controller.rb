@@ -7,6 +7,12 @@ class AgreementsController < ApplicationController
   def create
     #TODO verify authorization
 
+    #Check user exists
+    if !User.exists?(add_agreement_params[:user_id])
+      render json: { message: 'Couldn\'t find User with id='+add_agreement_params[:user_id] }, status: :not_found
+      return
+    end
+
     # Check if its single user or colaborative
     solo = true
     Discussion.find(add_agreement_params[:discussion_id]).avatars.each do |avatar|
@@ -34,12 +40,18 @@ class AgreementsController < ApplicationController
   def update
     #TODO verify authorization
 
+    #Check user exists
+    if !User.exists?(respond_agreement_params[:user_id])
+      render json: { message: 'Couldn\'t find User with id='+respond_agreement_params[:user_id] }, status: :not_found
+      return
+    end
+
     #Check if its rejected and then delete it
-    if respond_agreement_params[:isAccepted] == "false"
+    if respond_agreement_params[:isAccepted] == "false" && @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i
       if @agreement && @agreement.destroy
         render json: { message: 'Agreement rejected and deleted'}, status: :ok
       else
-        render json: { error: 'Invalid data'}, status: :unprocessable_entity
+        render json: { message: 'Invalid data'}, status: :unprocessable_entity
       end
       return
     end
@@ -47,7 +59,7 @@ class AgreementsController < ApplicationController
     if @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i && @agreement.update!(isAccepted: true)
       render :show, status: :ok, resource: @agreement
     else
-      render json: { error: 'Invalid data'}, status: :unprocessable_entity
+      render json: { message: 'Invalid data'}, status: :unprocessable_entity
     end
 
   end
