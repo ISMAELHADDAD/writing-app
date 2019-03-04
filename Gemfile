@@ -28,6 +28,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+gem 'google-id-token', git: 'https://github.com/google/google-id-token.git'
+
 group :development, :test do
   # The basics
   gem 'minitest'
