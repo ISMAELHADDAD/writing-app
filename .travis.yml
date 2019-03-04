@@ -16,7 +16,7 @@ deploy:
   app: ideashub-api
   on: master
   run:
-    - "rake db:drop"
+    - restart
+    - "pg:reset DATABASE --confirm ideashub-api"
     - "rake db:migrate"
     - "rake db:seed"
-    - restart
