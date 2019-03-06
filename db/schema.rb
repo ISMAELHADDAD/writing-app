@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_20_144519) do
+ActiveRecord::Schema.define(version: 2019_03_04_150949) do
 
   create_table "agreements", force: :cascade do |t|
     t.text "content"
@@ -61,6 +61,13 @@ ActiveRecord::Schema.define(version: 2019_02_20_144519) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "full_name"
+    t.string "email"
+    t.string "uid"
+    t.string "provider"
+    t.string "session_token"
+    t.datetime "session_token_expires_at"
+    t.string "image_url"
   end
 
 end

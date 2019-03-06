@@ -5,4 +5,8 @@ Rails.application.routes.draw do
     resources :agreements, only: %i(show create update)
   end
 
+  resources :users, only: %i(show), :defaults => {:format => :json}
+
+  post 'tokensignin', to: 'sessions#tokensignin', :defaults => {:format => :json}
+
 end
