@@ -1,11 +1,16 @@
 class ArgumentsController < ApplicationController
   before_action :set_discussion, only: [:show]
+  before_action :authenticate, only: [:create]
 
   def show
   end
 
   def create
     #TODO verify authorization
+    if current_user.id != add_argument_params[:user_id]
+      render json: { message: 'Unauthorized' }, status: :unauthorized
+      return
+    end
 
     #Check user exists
     if !User.exists?(add_argument_params[:user_id])

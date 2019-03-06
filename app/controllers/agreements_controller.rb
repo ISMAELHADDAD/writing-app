@@ -1,11 +1,16 @@
 class AgreementsController < ApplicationController
   before_action :set_agreement, only: [:show, :update]
+  before_action :authenticate, only: [:create, :update]
 
   def show
   end
 
   def create
     #TODO verify authorization
+    if current_user.id != add_agreement_params[:user_id]
+      render json: { message: 'Unauthorized' }, status: :unauthorized
+      return
+    end
 
     #Check user exists
     if !User.exists?(add_agreement_params[:user_id])
@@ -39,6 +44,10 @@ class AgreementsController < ApplicationController
 
   def update
     #TODO verify authorization
+    if current_user.id != respond_agreement_params[:user_id]
+      render json: { message: 'Unauthorized' }, status: :unauthorized
+      return
+    end
 
     #Check user exists
     if !User.exists?(respond_agreement_params[:user_id])
