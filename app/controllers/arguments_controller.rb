@@ -6,17 +6,6 @@ class ArgumentsController < ApplicationController
   end
 
   def create
-    #TODO verify authorization
-    if current_user.id != add_argument_params[:user_id]
-      render json: { message: 'Unauthorized' }, status: :unauthorized
-      return
-    end
-
-    #Check user exists
-    if !User.exists?(add_argument_params[:user_id])
-      render json: { message: 'Couldn\'t find User with id='+add_argument_params[:user_id] }, status: :not_found
-      return
-    end
 
     @argument = Argument.new(
       num: (Discussion.find(add_argument_params[:discussion_id].to_i).arguments.size + 1),
@@ -24,7 +13,7 @@ class ArgumentsController < ApplicationController
       avatar_id: add_argument_params[:avatar_id].to_i,
       discussion_id: add_argument_params[:discussion_id].to_i,
       publish_time: DateTime.now
-    ) if Avatar.find(add_argument_params[:avatar_id]).user.id == add_argument_params[:user_id].to_i # Verify if avatar is assigned to the user
+    ) if Avatar.find(add_argument_params[:avatar_id]).user.id == current_user.id # Verify if avatar is assigned to the user
 
     if @argument && @argument.save
       render :show, status: :created, resource: @argument
