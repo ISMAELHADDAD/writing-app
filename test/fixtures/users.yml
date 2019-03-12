@@ -21,3 +21,14 @@ username_that_already_exists:
   uid: 12345678910111213
   session_token: 123456
   session_token_expires_at: '2038-02-28 11:06:30.354286'
+
+user_2:
+  id: 3
+  name: user5678
+  created_at: '2019-02-28 11:06:30.354287'
+  updated_at: '2019-02-28 11:06:30.354287'
+  email: test2@test.com
+  provider: google_oauth
+  uid: 14151617181920212
+  session_token: 222222
+  session_token_expires_at: '2038-02-28 11:06:30.354286'

@@ -6,6 +6,14 @@ class DiscussionsController < ApplicationController
   end
 
   def invite
+
+    # Only owner of the discussion can make invitation
+    if @discussion.user.id != current_user.id
+      render :json => {message: "Only owner of the discussion can make invitation"},
+        status: :unauthorized
+      return
+    end
+
     participant = Participant.new(discussion: @discussion, verified: false)
     Participant.generateUniqueToken(participant)
     if participant.save
@@ -14,7 +22,8 @@ class DiscussionsController < ApplicationController
         current_user.name, # Username who makes the invite
         @discussion.id, # Discussion involved
         participant.token # Token for identifying the invitation
-      ).deliver_now
+      ).deliver_now if Rails.env.production?
+      render :json => {message: "Invitation send"}, status: :ok
     else
       render :json => {message: "Couldn't generate an invitation"}, status: :unprocessable_entity
     end
@@ -23,11 +32,17 @@ class DiscussionsController < ApplicationController
   def verify_invitation
     if !Participant.where(token: verfy_invitation_params[:token]).exists?
       render :json => {message: "Couldn't find token invitation"}, status: :not_found
+      return
     end
 
     participant = Participant.find_by(token: verfy_invitation_params[:token])
 
-    participant.update(user: current_user, verified: true)
+    if participant.verified
+      render :json => {message: "Token already verified"}, status: :forbidden
+      return
+    end
+
+    participant.update(user_id: current_user.id, verified: true)
 
     if participant.save
       render :json => {message: "Invitation verified"}, status: :ok
@@ -40,7 +55,11 @@ class DiscussionsController < ApplicationController
   private
 
   def set_discussion
-    @discussion = Discussion.find(params[:id])
+    if params[:discussion_id]
+      @discussion ||= Discussion.find(params[:discussion_id])
+    else
+      @discussion = Discussion.find(params[:id])
+    end
   end
 
   def invite_params

@@ -1,5 +1,5 @@
 class ArgumentsController < ApplicationController
-  before_action :set_discussion, only: [:show]
+  before_action :set_argument, only: [:show]
   before_action :authenticate, only: [:create]
 
   def show
