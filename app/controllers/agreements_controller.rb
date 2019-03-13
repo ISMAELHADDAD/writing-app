@@ -6,22 +6,11 @@ class AgreementsController < ApplicationController
   end
 
   def create
-    #TODO verify authorization
-    if current_user.id != add_agreement_params[:user_id]
-      render json: { message: 'Unauthorized' }, status: :unauthorized
-      return
-    end
-
-    #Check user exists
-    if !User.exists?(add_agreement_params[:user_id])
-      render json: { message: 'Couldn\'t find User with id='+add_agreement_params[:user_id] }, status: :not_found
-      return
-    end
 
     # Check if its single user or colaborative
     solo = true
     Discussion.find(add_agreement_params[:discussion_id]).avatars.each do |avatar|
-      if avatar.user.id != add_agreement_params[:user_id].to_i
+      if avatar.user.id != current_user.id
         solo = false
       end
     end
@@ -32,7 +21,7 @@ class AgreementsController < ApplicationController
       isAgree: add_agreement_params[:isAgree],
       avatar_id: add_agreement_params[:avatar_id].to_i,
       discussion_id: add_agreement_params[:discussion_id].to_i
-    ) if Avatar.find(add_agreement_params[:avatar_id]).user.id == add_agreement_params[:user_id].to_i # Verify if avatar is assigned to the user
+    ) if Avatar.find(add_agreement_params[:avatar_id]).user.id == current_user.id # Verify if avatar is assigned to the user
 
     if @agreement && @agreement.save
       render :show, status: :created, resource: @agreement
@@ -43,17 +32,6 @@ class AgreementsController < ApplicationController
   end
 
   def update
-    #TODO verify authorization
-    if current_user.id != respond_agreement_params[:user_id]
-      render json: { message: 'Unauthorized' }, status: :unauthorized
-      return
-    end
-
-    #Check user exists
-    if !User.exists?(respond_agreement_params[:user_id])
-      render json: { message: 'Couldn\'t find User with id='+respond_agreement_params[:user_id] }, status: :not_found
-      return
-    end
 
     #Check if its rejected and then delete it
     if respond_agreement_params[:isAccepted] == "false" && @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i
@@ -80,11 +58,11 @@ class AgreementsController < ApplicationController
   end
 
   def add_agreement_params
-    params.permit(:discussion_id, :user_id, :avatar_id, :content, :isAgree)
+    params.permit(:discussion_id, :avatar_id, :content, :isAgree)
   end
 
   def respond_agreement_params
-    params.permit(:user_id, :avatar_id, :isAccepted)
+    params.permit(:avatar_id, :isAccepted)
   end
 
 end

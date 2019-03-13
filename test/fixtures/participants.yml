@@ -1,0 +1,15 @@
+---
+participant_1:
+  id: 1
+  discussion_id: 1
+  user_id: 1
+  token: '888888'
+  verified: true
+
+
+participant_2:
+  id: 2
+  discussion_id: 1
+  user_id: null
+  token: '999999'
+  verified: false

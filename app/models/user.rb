@@ -4,6 +4,8 @@ class User < ApplicationRecord
   has_many :discussions, dependent: :destroy
   has_many :avatars, dependent: :destroy
 
+  has_many :participants
+
   # validations
   validates_presence_of :name
   validates_uniqueness_of :name, :session_token
