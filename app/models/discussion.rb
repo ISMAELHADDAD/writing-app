@@ -6,7 +6,7 @@ class Discussion < ApplicationRecord
   has_many :arguments, dependent: :destroy
   has_many :avatars, dependent: :destroy
 
-  has_many :users_participanting, :through => :participants
+  has_many :participants
 
   # validations
   validates_presence_of :topicTitle, :user_id

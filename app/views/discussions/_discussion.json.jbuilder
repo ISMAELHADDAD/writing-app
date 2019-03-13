@@ -22,3 +22,5 @@ json.avatarTwo do
   json.extract! discussion.avatars.second, :id, :name, :opinion
   json.assigned_to_UserID discussion.avatars.second.user.id
 end
+
+json.participants discussion.participants.collect { |par| par.user_id }
