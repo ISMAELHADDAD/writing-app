@@ -20,6 +20,8 @@ discussion = Discussion.create(topic_title: 'Deberian las motos poder utilizar e
                                user: user
                               )
 
+Participant.create(discussion: discussion, user: user, token:'testToken', verified: true)
+
 # Create the two avatars of the discussion
 Avatar.create( name: 'John Locke', opinion: 'A favor de la utilización del carril bus por las motocicletas.', discussion: discussion, user: user )
 Avatar.create( name: 'John Smith', opinion: 'En contra de la utilización del carril bus por las motocicletas. A favor del uso del transporte público.', discussion: discussion, user: user )
