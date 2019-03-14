@@ -17,8 +17,8 @@ class AgreementsController < ApplicationController
 
     @agreement = Agreement.new(
       content: add_agreement_params[:content],
-      isAccepted: solo,
-      isAgree: add_agreement_params[:isAgree],
+      is_accepted: solo,
+      is_agree: add_agreement_params[:is_agree],
       avatar_id: add_agreement_params[:avatar_id].to_i,
       discussion_id: add_agreement_params[:discussion_id].to_i
     ) if Avatar.find(add_agreement_params[:avatar_id]).user.id == current_user.id # Verify if avatar is assigned to the user
@@ -34,7 +34,7 @@ class AgreementsController < ApplicationController
   def update
 
     #Check if its rejected and then delete it
-    if respond_agreement_params[:isAccepted] == "false" && @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i
+    if respond_agreement_params[:is_accepted] == "false" && @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i
       if @agreement && @agreement.destroy
         render json: { message: 'Agreement rejected and deleted'}, status: :ok
       else
@@ -43,7 +43,7 @@ class AgreementsController < ApplicationController
       return
     end
 
-    if @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i && @agreement.update!(isAccepted: true)
+    if @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i && @agreement.update!(is_accepted: true)
       render :show, status: :ok, resource: @agreement
     else
       render json: { message: 'Invalid data'}, status: :unprocessable_entity
@@ -58,11 +58,11 @@ class AgreementsController < ApplicationController
   end
 
   def add_agreement_params
-    params.permit(:discussion_id, :avatar_id, :content, :isAgree)
+    params.permit(:discussion_id, :avatar_id, :content, :is_agree)
   end
 
   def respond_agreement_params
-    params.permit(:avatar_id, :isAccepted)
+    params.permit(:avatar_id, :is_accepted)
   end
 
 end

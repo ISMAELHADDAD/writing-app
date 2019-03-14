@@ -15,10 +15,12 @@ Discussion.destroy_all
 user = User.create( name: 'IsmaelHaddad', email: 'isma.7h@gmail.com', image_url: "https://lh4.googleusercontent.com/-OvEonYfBGHM/AAAAAAAAAAI/AAAAAAAAAAs/X3Zfwb1djn0/s96-c/photo.jpg")
 
 # Create a discussion
-discussion = Discussion.create(topicTitle: 'Deberian las motos poder utilizar el carril bus?',
-                               topicDescription: 'En muchas ciudades se estan planteando el permitir a las motocicletas circular por los carriles bus, y esto esta despertando mucha controversia entre personas que creen en la facilitación del uso de la motocicleta y en las que proponen la mejoria de los medios de transporte público para una reducción de vehiculos contaminantes.',
+discussion = Discussion.create(topic_title: 'Deberian las motos poder utilizar el carril bus?',
+                               topic_description: 'En muchas ciudades se estan planteando el permitir a las motocicletas circular por los carriles bus, y esto esta despertando mucha controversia entre personas que creen en la facilitación del uso de la motocicleta y en las que proponen la mejoria de los medios de transporte público para una reducción de vehiculos contaminantes.',
                                user: user
                               )
+
+Participant.create(discussion: discussion, user: user, token:'testToken', verified: true)
 
 # Create the two avatars of the discussion
 Avatar.create( name: 'John Locke', opinion: 'A favor de la utilización del carril bus por las motocicletas.', discussion: discussion, user: user )
@@ -35,6 +37,6 @@ Argument.create( num: 4, content: 'Pero, la utilización de motocicletas en el c
   publish_time: DateTime.now, discussion: discussion, avatar: Avatar.first )
 
 # Add agreements on the discussion
-Agreement.create( content: 'Utilización del carril bus por las motos en diferentes horarios.', isAccepted: true, isAgree: true, discussion: discussion, avatar: Avatar.first )
-Agreement.create( content: 'Mejorar transporte público.', isAccepted: false, isAgree: true, discussion: discussion, avatar: Avatar.first )
-Agreement.create( content: 'Las motos contaminan menos que los coches.', isAccepted: false, isAgree: false, discussion: discussion, avatar: Avatar.first )
+Agreement.create( content: 'Utilización del carril bus por las motos en diferentes horarios.', is_accepted: true, is_agree: true, discussion: discussion, avatar: Avatar.first )
+Agreement.create( content: 'Mejorar transporte público.', is_accepted: false, is_agree: true, discussion: discussion, avatar: Avatar.first )
+Agreement.create( content: 'Las motos contaminan menos que los coches.', is_accepted: false, is_agree: false, discussion: discussion, avatar: Avatar.first )

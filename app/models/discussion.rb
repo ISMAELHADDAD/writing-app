@@ -9,5 +9,5 @@ class Discussion < ApplicationRecord
   has_many :participants
 
   # validations
-  validates_presence_of :topicTitle, :user_id
+  validates_presence_of :topic_title, :user_id
 end

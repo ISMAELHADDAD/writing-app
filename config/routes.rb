@@ -7,6 +7,9 @@ Rails.application.routes.draw do
 
     resources :arguments, only: %i(show create)
     resources :agreements, only: %i(show create update)
+    resources :avatar, only: %i() do
+      put 'assign', to: 'avatars#assign'
+    end
   end
 
   resources :users, only: %i(show), :defaults => {:format => :json}
