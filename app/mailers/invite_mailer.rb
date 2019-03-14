@@ -1,7 +1,7 @@
 class InviteMailer < ApplicationMailer
 
   def invite_participant(email, from, discussion_id, token)
-    @url = "https://ideashub-client.herokuapp.com/authorize?" +
+    @url = "https://ideashub-client.netlify.com/authorize?" +
     "discussion_id=" + discussion_id.to_s + "&" +
     "token=" + token
 
