@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
       # b. If user is not registered, then register and return fresh session_token
       else
         u = User.create(
-          name: jwt['given_name'] + '' + jwt['family_name'],
+          name: jwt['given_name'] + ' ' + jwt['family_name'],
           provider: 'google_oauth2',
           uid: jwt['sub'],
           email: jwt['email'],

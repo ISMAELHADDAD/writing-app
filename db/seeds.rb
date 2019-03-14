@@ -12,7 +12,7 @@ User.destroy_all
 Discussion.destroy_all
 
 # Create a user
-user = User.create( name: 'IsmaelHaddad', email: 'isma.7h@gmail.com', image_url: "https://lh4.googleusercontent.com/-OvEonYfBGHM/AAAAAAAAAAI/AAAAAAAAAAs/X3Zfwb1djn0/s96-c/photo.jpg")
+user = User.create( name: 'Ismael Haddad', email: 'isma.7h@gmail.com', image_url: "https://lh4.googleusercontent.com/-OvEonYfBGHM/AAAAAAAAAAI/AAAAAAAAAAs/X3Zfwb1djn0/s96-c/photo.jpg")
 
 # Create a discussion
 discussion = Discussion.create(topic_title: 'Deberian las motos poder utilizar el carril bus?',
