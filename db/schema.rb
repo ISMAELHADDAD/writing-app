@@ -14,8 +14,8 @@ ActiveRecord::Schema.define(version: 2019_03_11_103309) do
 
   create_table "agreements", force: :cascade do |t|
     t.text "content"
-    t.boolean "isAccepted"
-    t.boolean "isAgree"
+    t.boolean "is_accepted"
+    t.boolean "is_agree"
     t.integer "avatar_id"
     t.integer "discussion_id"
     t.datetime "created_at", null: false
@@ -48,8 +48,8 @@ ActiveRecord::Schema.define(version: 2019_03_11_103309) do
   end
 
   create_table "discussions", force: :cascade do |t|
-    t.string "topicTitle"
-    t.string "topicDescription"
+    t.string "topic_title"
+    t.string "topic_description"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

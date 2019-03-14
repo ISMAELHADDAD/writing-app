@@ -1,3 +1,5 @@
-json.extract! agreement, :id, :content, :isAccepted, :isAgree
-json.proposed_by_AvatarID agreement.avatar.id
-json.proposed_by_AvatarName agreement.avatar.name
+json.extract! agreement, :id, :content
+json.isAccepted agreement.is_accepted
+json.isAgree agreement.is_agree
+json.proposedByAvatarId agreement.avatar.id
+json.proposedByAvatarName agreement.avatar.name

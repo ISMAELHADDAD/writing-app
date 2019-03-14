@@ -11,7 +11,7 @@ class ArgumentsControllerTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(response.body)
     assert_equal json['content'], 'It\'s a test argument'
-    assert_equal json['from_AvatarID'], 1
+    assert_equal json['fromAvatarId'], 1
 
     assert_response :success
   end

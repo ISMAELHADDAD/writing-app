@@ -6,14 +6,14 @@ class AgreementsControllerTest < ActionDispatch::IntegrationTest
       params: {
         avatar_id: 1,
         content: 'It\'s a test agreement',
-        isAgree: true
+        is_agree: true
       },
       headers: { "Authorization" => "123456" }
 
     json = JSON.parse(response.body)
     assert_equal json['content'], 'It\'s a test agreement'
     assert_equal json['isAgree'], true
-    assert_equal json['proposed_by_AvatarID'], 1
+    assert_equal json['proposedByAvatarId'], 1
 
     assert_response :success
   end
@@ -23,7 +23,7 @@ class AgreementsControllerTest < ActionDispatch::IntegrationTest
       params: {
         avatar_id: 1,
         content: 'It\'s a test agreement',
-        isAgree: true
+        is_agree: true
       },
       headers: { "Authorization" => "111111" }
     assert_match /session_token expired or doesn't exists/, JSON.parse(response.body)['message']
@@ -36,7 +36,7 @@ class AgreementsControllerTest < ActionDispatch::IntegrationTest
         user_id: 1,
         avatar_id: 100,
         content: 'It\'s a test agreement',
-        isAgree: true
+        is_agree: true
       },
       headers: { "Authorization" => "123456" }
     assert_match /Couldn't find Avatar/, JSON.parse(response.body)['message']
@@ -48,7 +48,7 @@ class AgreementsControllerTest < ActionDispatch::IntegrationTest
       params: {
         user_id: 1,
         avatar_id: 2,
-        isAccepted: "false"
+        is_accepted: "false"
       },
       headers: { "Authorization" => "123456" }
 
@@ -61,7 +61,7 @@ class AgreementsControllerTest < ActionDispatch::IntegrationTest
       params: {
         user_id: 1,
         avatar_id: 1,
-        isAccepted: "false"
+        is_accepted: "false"
       },
       headers: { "Authorization" => "123456" }
 

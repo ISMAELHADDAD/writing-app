@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
         u = User.find_by(email: jwt['email'])
         User.generateUniqueSessionToken(u)
         u.save!
-        render :json => {"user_id": u.id, "name": u.name, "session_token": u.session_token, "session_token_expires_at": u.session_token_expires_at}, status: :ok
+        render :json => {"userId": u.id, "name": u.name, "sessionToken": u.session_token, "sessionTokenExpiresAt": u.session_token_expires_at}, status: :ok
         return
 
       # b. If user is not registered, then register and return fresh session_token
@@ -29,7 +29,7 @@ class SessionsController < ApplicationController
         )
         User.generateUniqueSessionToken(u)
         if u.save!
-          render :json => {"user_id": u.id, "name": u.name, "session_token": u.session_token, "session_token_expires_at": u.session_token_expires_at}, status: :ok
+          render :json => {"userId": u.id, "name": u.name, "sessionToken": u.session_token, "sessionTokenExpiresAt": u.session_token_expires_at}, status: :ok
           return
         end
       end

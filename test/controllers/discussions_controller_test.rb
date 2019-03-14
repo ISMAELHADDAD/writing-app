@@ -8,9 +8,9 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(response.body)
     assert_equal json['id'], discussion.id
-    assert_equal json['topicTitle'], discussion.topicTitle
-    assert_equal json['topicDescription'], discussion.topicDescription
-    assert_equal json['owner_UserID'], discussion.user.id
+    assert_equal json['topicTitle'], discussion.topic_title
+    assert_equal json['topicDescription'], discussion.topic_description
+    assert_equal json['ownerUserId'], discussion.user.id
     assert_equal json['arguments'].size, discussion.arguments.size
     assert_equal json['agreements'].size, discussion.agreements.size
 
