@@ -2,6 +2,10 @@ class DiscussionsController < ApplicationController
   before_action :set_discussion, only: [:show, :invite]
   before_action :authenticate, only: [:invite, :verify_invitation]
 
+  def index
+    @discussions = Discussion.all
+  end
+
   def show
   end
 
