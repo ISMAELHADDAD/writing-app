@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  resources :discussions, only: %i(index show), :defaults => {:format => :json} do
+  resources :discussions, only: %i(index show create), :defaults => {:format => :json} do
 
     post 'invite', to: 'discussions#invite'
     put 'verify_invitation', to: 'discussions#verify_invitation'
