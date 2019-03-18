@@ -28,8 +28,14 @@ class DiscussionsController < ApplicationController
       discussion: @discussion,
       user: current_user
     )
+    participant = Participant.create(
+      discussion: @discussion,
+      user: current_user,
+      token: nil,
+      verified: true
+    )
 
-    if @discussion.save && avatar_one.save && avatar_two.save
+    if @discussion.save && avatar_one.save && avatar_two.save && participant.save
       render :show, status: :created, resource: @discussion
     else
       render json: { message: 'Invalid data'}, status: :unprocessable_entity
