@@ -10,6 +10,7 @@ class DiscussionTest < ActiveSupport::TestCase
     must have_many(:arguments).dependent(:destroy)
     must have_many(:agreements).dependent(:destroy)
     must have_many(:avatars).dependent(:destroy)
+    must have_many(:participants).dependent(:destroy)
     must belong_to(:user)
     # Validation tests
     must validate_presence_of(:user_id)

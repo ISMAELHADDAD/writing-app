@@ -51,13 +51,42 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get error message on create with unauthorized user" do
-    post discussion_invite_url(discussion_id: 1),
+    post discussions_url(),
       params: {
-        email: 'to@example.com'
+        topic_title: 'test title',
+        topic_description: 'test description',
+        name_avatar_one: 'test name avatar one',
+        opinion_avatar_one: 'test opinion avatar one',
+        name_avatar_two: 'test name avatar two',
+        opinion_avatar_two: 'test opinion avatar two'
       },
       headers: { "Authorization" => "111111" }
 
     assert_match /session_token expired or doesn't exists/, JSON.parse(response.body)['message']
+    assert_response :unauthorized
+  end
+
+  test "should get success message on destroy" do
+    delete discussion_url(id: 1),
+      headers: { "Authorization" => "123456" }
+
+    assert_match /Discussion deleted/, JSON.parse(response.body)['message']
+    assert_response :success
+  end
+
+  test "should get error message on destroy with unauthorized user" do
+    delete discussion_url(id: 1),
+      headers: { "Authorization" => "111111" }
+
+    assert_match /session_token expired or doesn't exists/, JSON.parse(response.body)['message']
+    assert_response :unauthorized
+  end
+
+  test "should get error message on destroy with user not owning the discussion" do
+    delete discussion_url(id: 1),
+      headers: { "Authorization" => "222222" }
+
+    assert_match /Only owner of the discussion can delete it/, JSON.parse(response.body)['message']
     assert_response :unauthorized
   end
 

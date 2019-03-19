@@ -1,6 +1,6 @@
 class DiscussionsController < ApplicationController
-  before_action :set_discussion, only: [:show, :invite]
-  before_action :authenticate, only: [:create, :invite, :verify_invitation]
+  before_action :set_discussion, only: [:show, :destroy, :invite]
+  before_action :authenticate, only: [:create, :destroy, :invite, :verify_invitation]
 
   def index
     @discussions = Discussion.all
@@ -41,6 +41,19 @@ class DiscussionsController < ApplicationController
       render json: { message: 'Invalid data'}, status: :unprocessable_entity
     end
 
+  end
+
+  def destroy
+    if @discussion.user.id != current_user.id
+      render json: { message: 'Only owner of the discussion can delete it'}, status: :unauthorized
+      return
+    end
+
+    if @discussion.destroy
+      render json: { message: 'Discussion deleted'}, status: :ok
+    else
+      render json: @discussion.errors, status: :unprocessable_entity
+    end
   end
 
   def invite
