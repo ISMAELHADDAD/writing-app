@@ -14,12 +14,21 @@ A REST API for a discussion app which allows you to organize your ideas in a dis
 ## API Documentation
 Auth | Method | Url | Params | Description
 --- | --- | --- | --- | --- |
+<<<<<<< HEAD
 No | GET | `/discussions/:id` | `id` | Get discussion with specific id. |
 No | GET | `/users/:id` | `id` | Get user with specific id.|
 Yes | POST | `/discussions/:discussion_id/arguments` | `discussion_id`, `avatar_id`, `content` | Send an argument in a specific discussion. |
 Yes | POST | `/discussions/:discussion_id/agreements` | `discussion_id`, `avatar_id`, `content`, `is_agree` | Propose an agreement if `is_agree = true` or disagreement if `is_agree = false` in a specific discussion. |
 Yes | PUT | `/discussions/:discussion_id/agreements/:agreement_id` | `discussion_id`, `avatar_id`, `is_accepted` | Accept an agreement if `is_accepted = true` or reject if `is_accepted = false` in a specific discussion. |
 No | POST | `/tokensignin` | `id_token` | Verify Google token id. |
+=======
+ | GET | `/discussions/:id` | `id` | Get discussion with specific id. |
+ | GET | `/users/:id` | `id` | Get user with specific id.|
+Yes | POST | `/discussions/:discussion_id/arguments` | `discussion_id`, `avatar_id`, `content` | Send an argument in a specific discussion. |
+Yes | POST | `/discussions/:discussion_id/agreements` | `discussion_id`, `avatar_id`, `content`, `is_agree` | Propose an agreement if `is_agree = true` or disagreement if `is_agree = false` in a specific discussion. |
+Yes | PUT | `/discussions/:discussion_id/agreements/:agreement_id` | `discussion_id`, `avatar_id`, `is_accepted` | Accept an agreement if `is_accepted = true` or reject if `is_accepted = false` in a specific discussion. |
+ | POST | `/tokensignin` | `id_token` | Verify Google token id. |
+>>>>>>> 1b4e17b16c88141c3490e57919b8855b61e3cd8e
 Yes | POST | `/discussions/:discussion_id/invite` | `discussion_id`, `email` | Send an email invitation to participate in a specific discussion. |
 Yes | PUT | `/discussions/:discussion_id/verify_invitation` | `discussion_id`, `token` | Verify if invitation is valid to participate in a specific discussion. |
 Yes | PUT | `/discussions/:discussion_id/avatar/:avatar_id` | `discussion_id`, `avatar_id`, `user_id` | Assign user an avatar in a specific discussion. |
