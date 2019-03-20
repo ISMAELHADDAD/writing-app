@@ -25,6 +25,7 @@ Yes | PUT | `/discussions/:discussion_id/verify_invitation` | `discussion_id`, `
 Yes | PUT | `/discussions/:discussion_id/avatar/:avatar_id` | `discussion_id`, `avatar_id`, `user_id` | Assign user an avatar in a specific discussion. |
 Yes | POST | `/discussions/` | `topic_title`, `topic_description`, `name_avatar_one`, `opinion_avatar_one`, `name_avatar_two`, `opinion_avatar_two` | Create new discussion. |
 Yes | DELETE | `/discussions/:id` | `:id` | Delete a specific discussion. |
+No | GET | `/discussions?page=[:page]&user_id=[:user_id]` | `page`, `user_id` | Get public discussions. |
 ## Installing for development, testing, and deploy
 #### Ruby version: 2.5.1
 #### Rails version: 5.2.2

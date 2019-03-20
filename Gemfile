@@ -16,6 +16,8 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'pry'
 
+gem 'kaminari'
+
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 

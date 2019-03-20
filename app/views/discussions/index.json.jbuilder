@@ -6,3 +6,8 @@ json.discussions @discussions do |discussion|
     json.name discussion.user.name
   end
 end
+
+json.pages do
+  json.current @discussions.current_page
+  json.total @discussions.total_pages
+end
