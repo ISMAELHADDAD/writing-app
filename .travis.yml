@@ -17,6 +17,3 @@ deploy:
   on: master
   run:
     - restart
-    - "pg:reset DATABASE --confirm ideashub-api"
-    - "rake db:migrate"
-    - "rake db:seed"
