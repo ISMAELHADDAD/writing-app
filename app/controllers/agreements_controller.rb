@@ -24,6 +24,19 @@ class AgreementsController < ApplicationController
     ) if Avatar.find(add_agreement_params[:avatar_id]).user.id == current_user.id # Verify if avatar is assigned to the user
 
     if @agreement && @agreement.save
+      # Emit that new agreement has been proposed
+      content = {
+        id: @agreement.id,
+        content: @agreement.content,
+        isAccepted: @agreement.is_accepted,
+        isAgree: @agreement.is_agree,
+        proposedByAvatarId: @agreement.avatar.id,
+        proposedByAvatarName: @agreement.avatar.name
+      }
+      ActionCable.server.broadcast 'discussion_room_#' + @agreement.discussion.id.to_s,
+        type: 'agreement-propose',
+        content: content.to_json
+      # Render the new agreement
       render :show, status: :created, resource: @agreement
     else
       render json: { error: 'Invalid data'}, status: :unprocessable_entity
@@ -36,6 +49,11 @@ class AgreementsController < ApplicationController
     #Check if its rejected and then delete it
     if respond_agreement_params[:is_accepted] == "false" && @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i
       if @agreement && @agreement.destroy
+        # Emit that agreement has been rejected
+        ActionCable.server.broadcast 'discussion_room_#' + @agreement.discussion.id.to_s,
+          type: 'agreement-reject',
+          content: params[:id]
+        # Render success message
         render json: { message: 'Agreement rejected and deleted'}, status: :ok
       else
         render json: { message: 'Invalid data'}, status: :unprocessable_entity
@@ -44,6 +62,11 @@ class AgreementsController < ApplicationController
     end
 
     if @agreement.avatar.id != respond_agreement_params[:avatar_id].to_i && @agreement.update!(is_accepted: true)
+      # Emit that agreement has been accepted
+      ActionCable.server.broadcast 'discussion_room_#' + @agreement.discussion.id.to_s,
+        type: 'agreement-accept',
+        content: params[:id]
+      # Render success message
       render :show, status: :ok, resource: @agreement
     else
       render json: { message: 'Invalid data'}, status: :unprocessable_entity

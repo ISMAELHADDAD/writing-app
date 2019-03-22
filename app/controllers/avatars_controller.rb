@@ -17,6 +17,15 @@ class AvatarsController < ApplicationController
     end
 
     if @avatar.update(user_id: assign_params[:user_id])
+      # Emit that new argument has been published
+      content = {
+        userId: @avatar.user.id,
+        avatarId: @avatar.id
+      }
+      ActionCable.server.broadcast 'discussion_room_#' + @avatar.discussion.id.to_s,
+        type: 'avatar-assign',
+        content: content.to_json
+      # Render success message
       render :json => {message: "Avatar with id="+@avatar.id.to_s+
         " is assigned to user with id="+assign_params[:user_id].to_s }, status: :ok
     else
