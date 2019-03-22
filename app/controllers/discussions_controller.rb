@@ -3,7 +3,11 @@ class DiscussionsController < ApplicationController
   before_action :authenticate, only: [:create, :destroy, :invite, :verify_invitation]
 
   def index
-    @discussions = Discussion.all
+    if params[:user_id]
+      @discussions = Discussion.where(user_id: params[:user_id]).page params[:page]
+    else
+      @discussions = Discussion.page params[:page]
+    end
   end
 
   def show
@@ -96,6 +100,11 @@ class DiscussionsController < ApplicationController
     participant.update(user_id: current_user.id, verified: true)
 
     if participant.save
+      # Emit that participant has been verified
+      ActionCable.server.broadcast 'discussion_room_#' + participant.discussion.id.to_s,
+        type: 'participant-verified',
+        content: participant.user.id
+      # Render success message
       render :json => {message: "Invitation verified"}, status: :ok
     else
       render :json => {message: "Couldn't verify the invitation"}, status: :unprocessable_entity

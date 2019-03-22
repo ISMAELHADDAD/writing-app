@@ -46,6 +46,14 @@ Rails.application.configure do
     :enable_starttls_auto => true
   }
 
+  config.web_socket_server_url = "wss://ideashub-api.herokuapp.com/cable"
+  config.action_cable.allowed_request_origins = [
+    'https://ideashub-api.herokuapp.com',
+    'http://ideashub-api.herokuapp.com',
+    'https://ideashub-client.netlify.com', 
+    'http://ideashub-client.netlify.com',
+  ]
+
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'

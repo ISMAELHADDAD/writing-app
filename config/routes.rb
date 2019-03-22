@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
+
   resources :discussions, only: %i(index show create destroy), :defaults => {:format => :json} do
 
     post 'invite', to: 'discussions#invite'
