@@ -23,6 +23,29 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "should get index" do
+    get discussions_url()
+
+    json = JSON.parse(response.body)
+    assert_equal json['discussions'].size, 1, "should get 1 discussion"
+    assert_equal json['pages']['current'], 1, "should get current pages 1"
+    assert_equal json['pages']['total'], 1, "should get total pages 1"
+
+    assert_response :success
+  end
+
+  test "should get index with zero discussions" do
+    get discussions_url(),
+    params: {user_id: 3}
+
+    json = JSON.parse(response.body)
+    assert_equal json['discussions'].size, 0, "should get 0 discussion"
+    assert_equal json['pages']['current'], 1, "should get current pages 1"
+    assert_equal json['pages']['total'], 0, "should get total pages 1"
+
+    assert_response :success
+  end
+
   test "should get created message on create" do
     post discussions_url(),
       params: {

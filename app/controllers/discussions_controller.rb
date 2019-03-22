@@ -3,7 +3,11 @@ class DiscussionsController < ApplicationController
   before_action :authenticate, only: [:create, :destroy, :invite, :verify_invitation]
 
   def index
-    @discussions = Discussion.all
+    if params[:user_id]
+      @discussions = Discussion.where(user_id: params[:user_id]).page params[:page]
+    else
+      @discussions = Discussion.page params[:page]
+    end
   end
 
   def show
