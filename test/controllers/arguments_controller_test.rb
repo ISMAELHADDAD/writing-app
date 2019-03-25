@@ -10,8 +10,8 @@ class ArgumentsControllerTest < ActionDispatch::IntegrationTest
       headers: { "Authorization" => "123456" }
 
     json = JSON.parse(response.body)
-    assert_equal json['content'], 'It\'s a test argument'
-    assert_equal json['fromAvatarId'], 1
+    assert_equal 'It\'s a test argument', json['content']
+    assert_equal 1, json['fromAvatarId']
 
     assert_response :success
   end

@@ -142,7 +142,7 @@ class DiscussionsController < ApplicationController
     participant = Participant.create(discussion: new_discussion, user: current_user, token: nil, verified: true)
 
     if new_discussion.save && new_avatar_one.save && new_avatar_two.save && participant.save
-      render :json => {message: "Forked with success"}, status: :ok
+      render :json => {message: "Forked with success", id: new_discussion.id}, status: :ok
     else
       render :json => {message: "Invalid fork"}, status: :unprocessable_entity
     end
