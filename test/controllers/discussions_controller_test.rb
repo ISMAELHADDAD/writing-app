@@ -13,7 +13,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal json['ownerUserId'], discussion.user.id
     assert_equal json['arguments'].size, discussion.arguments.size
     assert_equal json['agreements'].size, discussion.agreements.size
-    assert_equal json['participants'].size, discussion.participants.size
+    assert_equal json['participants'].size, 1
 
     assert_response :success
   end
