@@ -28,4 +28,4 @@ json.avatarTwo do
   json.assignedToUserId discussion.avatars.second.user.id
 end
 
-json.participants discussion.participants.collect { |par| par.user_id }
+json.participants discussion.participants.reject { |par| !par.verified }.map { |par| par.user_id }
