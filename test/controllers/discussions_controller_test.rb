@@ -74,6 +74,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
       params: {
         topic_title: 'test title',
         topic_description: 'test description',
+        private: false,
         name_avatar_one: 'test name avatar one',
         opinion_avatar_one: 'test opinion avatar one',
         name_avatar_two: 'test name avatar two',
@@ -84,6 +85,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     json = JSON.parse(response.body)
     assert_equal 'test title', json['topicTitle']
     assert_equal 'test description', json['topicDescription']
+    assert_equal false, json['private']
     assert_equal 1, json['ownerUserId'], 'should be id = 1'
     assert_equal 'test name avatar one', json['avatarOne']['name']
     assert_equal 'test opinion avatar one', json['avatarOne']['opinion']
@@ -101,6 +103,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
       params: {
         topic_title: 'test title',
         topic_description: 'test description',
+        private: false,
         name_avatar_one: 'test name avatar one',
         opinion_avatar_one: 'test opinion avatar one',
         name_avatar_two: 'test name avatar two',

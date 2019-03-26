@@ -22,6 +22,7 @@ class DiscussionsController < ApplicationController
     @discussion = Discussion.create(
       topic_title: create_discussion_paramas[:topic_title],
       topic_description: create_discussion_paramas[:topic_description],
+      private: create_discussion_paramas[:private],
       user: current_user
     )
     avatar_one = Avatar.create(
@@ -164,7 +165,7 @@ class DiscussionsController < ApplicationController
   end
 
   def create_discussion_paramas
-    params.permit(:topic_title, :topic_description, :name_avatar_one, :opinion_avatar_one, :name_avatar_two, :opinion_avatar_two)
+    params.permit(:topic_title, :topic_description, :private, :name_avatar_one, :opinion_avatar_one, :name_avatar_two, :opinion_avatar_two)
   end
 
   def invite_params
