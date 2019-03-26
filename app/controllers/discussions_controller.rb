@@ -1,12 +1,16 @@
 class DiscussionsController < ApplicationController
-  before_action :set_discussion, only: [:show, :destroy, :invite]
-  before_action :authenticate, only: [:create, :destroy, :invite, :verify_invitation]
+  before_action :set_discussion, only: [:show, :destroy, :invite, :fork]
+  before_action :authenticate, only: [:create, :destroy, :invite, :verify_invitation, :fork]
 
   def index
     if params[:user_id]
-      @discussions = Discussion.where(user_id: params[:user_id]).page params[:page]
+      if request.headers["Authorization"] && sessionToken_valid?
+        @discussions = Discussion.where(user_id: params[:user_id]).page params[:page]
+      else
+        @discussions = Discussion.where(user_id: params[:user_id], private: false).page params[:page]
+      end
     else
-      @discussions = Discussion.page params[:page]
+      @discussions = Discussion.where(private: false).page params[:page]
     end
   end
 
@@ -18,6 +22,7 @@ class DiscussionsController < ApplicationController
     @discussion = Discussion.create(
       topic_title: create_discussion_paramas[:topic_title],
       topic_description: create_discussion_paramas[:topic_description],
+      private: create_discussion_paramas[:private],
       user: current_user
     )
     avatar_one = Avatar.create(
@@ -112,6 +117,43 @@ class DiscussionsController < ApplicationController
 
   end
 
+  def fork
+    new_discussion = @discussion.dup
+    new_discussion.update(user_id: current_user.id)
+
+    new_avatar_one = @discussion.avatars.first.dup
+    new_avatar_one.update(user_id: current_user.id, discussion_id: new_discussion.id)
+    new_avatar_two = @discussion.avatars.second.dup
+    new_avatar_two.update(user_id: current_user.id, discussion_id: new_discussion.id)
+
+    @discussion.arguments.each do |argument|
+      new_argument = argument.dup
+      if argument.avatar.id == @discussion.avatars.first.id
+        new_argument.update(avatar_id: new_avatar_one.id, discussion_id: new_discussion.id)
+      else
+        new_argument.update(avatar_id: new_avatar_two.id, discussion_id: new_discussion.id)
+      end
+    end
+
+    @discussion.agreements.each do |agreement|
+      new_agreement = agreement.dup
+      if agreement.avatar.id == @discussion.avatars.first.id
+        new_agreement.update(avatar_id: new_avatar_one.id, discussion_id: new_discussion.id)
+      else
+        new_agreement.update(avatar_id: new_avatar_two.id, discussion_id: new_discussion.id)
+      end
+    end
+
+    participant = Participant.create(discussion: new_discussion, user: current_user, token: nil, verified: true)
+
+    if new_discussion.save && new_avatar_one.save && new_avatar_two.save && participant.save
+      render :json => {message: "Forked with success", id: new_discussion.id}, status: :ok
+    else
+      render :json => {message: "Invalid fork"}, status: :unprocessable_entity
+    end
+
+  end
+
   private
 
   def set_discussion
@@ -123,7 +165,7 @@ class DiscussionsController < ApplicationController
   end
 
   def create_discussion_paramas
-    params.permit(:topic_title, :topic_description, :name_avatar_one, :opinion_avatar_one, :name_avatar_two, :opinion_avatar_two)
+    params.permit(:topic_title, :topic_description, :private, :name_avatar_one, :opinion_avatar_one, :name_avatar_two, :opinion_avatar_two)
   end
 
   def invite_params

@@ -7,13 +7,13 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     get discussion_url(id:1)
 
     json = JSON.parse(response.body)
-    assert_equal json['id'], discussion.id
-    assert_equal json['topicTitle'], discussion.topic_title
-    assert_equal json['topicDescription'], discussion.topic_description
-    assert_equal json['ownerUserId'], discussion.user.id
-    assert_equal json['arguments'].size, discussion.arguments.size
-    assert_equal json['agreements'].size, discussion.agreements.size
-    assert_equal json['participants'].size, 1
+    assert_equal discussion.id, json['id']
+    assert_equal discussion.topic_title, json['topicTitle']
+    assert_equal discussion.topic_description, json['topicDescription']
+    assert_equal discussion.user.id, json['ownerUserId']
+    assert_equal discussion.arguments.size, json['arguments'].size
+    assert_equal discussion.agreements.size, json['agreements'].size
+    assert_equal 1, json['participants'].size
 
     assert_response :success
   end
@@ -27,9 +27,32 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     get discussions_url()
 
     json = JSON.parse(response.body)
-    assert_equal json['discussions'].size, 1, "should get 1 discussion"
-    assert_equal json['pages']['current'], 1, "should get current pages 1"
-    assert_equal json['pages']['total'], 1, "should get total pages 1"
+    assert_equal 1, json['discussions'].size, "should get 0 discussion"
+    assert_equal 1, json['pages']['current'], "should get current pages 1"
+    assert_equal 1, json['pages']['total'], "should get total pages 1"
+
+    assert_response :success
+  end
+
+  test "should get index on specific user" do
+    get discussions_url(user_id: 1)
+
+    json = JSON.parse(response.body)
+    assert_equal 1, json['discussions'].size, "should get 1 discussion"
+    assert_equal 1, json['pages']['current'], "should get current pages 1"
+    assert_equal 1, json['pages']['total'], "should get total pages 1"
+
+    assert_response :success
+  end
+
+  test "should get index on specific user authenticated" do
+    get discussions_url(user_id: 1),
+    headers: { "Authorization" => "123456" }
+
+    json = JSON.parse(response.body)
+    assert_equal 2, json['discussions'].size, "should get 2 discussion"
+    assert_equal 1, json['pages']['current'], "should get current pages 1"
+    assert_equal 1, json['pages']['total'], "should get total pages 1"
 
     assert_response :success
   end
@@ -39,9 +62,9 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     params: {user_id: 3}
 
     json = JSON.parse(response.body)
-    assert_equal json['discussions'].size, 0, "should get 0 discussion"
-    assert_equal json['pages']['current'], 1, "should get current pages 1"
-    assert_equal json['pages']['total'], 0, "should get total pages 1"
+    assert_equal 0, json['discussions'].size, "should get 0 discussion"
+    assert_equal 1, json['pages']['current'], "should get current pages 1"
+    assert_equal 0, json['pages']['total'], "should get total pages 1"
 
     assert_response :success
   end
@@ -51,6 +74,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
       params: {
         topic_title: 'test title',
         topic_description: 'test description',
+        private: false,
         name_avatar_one: 'test name avatar one',
         opinion_avatar_one: 'test opinion avatar one',
         name_avatar_two: 'test name avatar two',
@@ -59,16 +83,17 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
       headers: { "Authorization" => "123456" }
 
     json = JSON.parse(response.body)
-    assert_equal json['topicTitle'], 'test title'
-    assert_equal json['topicDescription'], 'test description'
-    assert_equal json['ownerUserId'], 1, 'should be id = 1'
-    assert_equal json['avatarOne']['name'], 'test name avatar one'
-    assert_equal json['avatarOne']['opinion'], 'test opinion avatar one'
-    assert_equal json['avatarTwo']['name'], 'test name avatar two'
-    assert_equal json['avatarTwo']['opinion'], 'test opinion avatar two'
-    assert_equal json['arguments'].size, 0, 'has no arguments'
-    assert_equal json['agreements'].size, 0, 'has no agreements'
-    assert_equal json['participants'].size, 1, 'should have 1 participant'
+    assert_equal 'test title', json['topicTitle']
+    assert_equal 'test description', json['topicDescription']
+    assert_equal false, json['private']
+    assert_equal 1, json['ownerUserId'], 'should be id = 1'
+    assert_equal 'test name avatar one', json['avatarOne']['name']
+    assert_equal 'test opinion avatar one', json['avatarOne']['opinion']
+    assert_equal 'test name avatar two', json['avatarTwo']['name']
+    assert_equal 'test opinion avatar two', json['avatarTwo']['opinion']
+    assert_equal 0, json['arguments'].size, 'has no arguments'
+    assert_equal 0, json['agreements'].size, 'has no agreements'
+    assert_equal 1, json['participants'].size, 'should have 1 participant'
 
     assert_response :created
   end
@@ -78,6 +103,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
       params: {
         topic_title: 'test title',
         topic_description: 'test description',
+        private: false,
         name_avatar_one: 'test name avatar one',
         opinion_avatar_one: 'test opinion avatar one',
         name_avatar_two: 'test name avatar two',
@@ -177,6 +203,23 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_match /Token already verified/, JSON.parse(response.body)['message']
     assert_response :forbidden
+  end
+
+  test "should get success message on fork" do
+    put discussion_fork_url(discussion_id: 1),
+      headers: { "Authorization" => "123456" }
+
+    assert_match /Forked with success/, JSON.parse(response.body)['message']
+    assert_equal 3, JSON.parse(response.body)['id']
+    assert_response :success
+  end
+
+  test "should get error message on fork with non-existing user" do
+    put discussion_fork_url(discussion_id: 1),
+      headers: { "Authorization" => "111111" }
+
+    assert_match /session_token expired or doesn't exists/, JSON.parse(response.body)['message']
+    assert_response :unauthorized
   end
 
 end

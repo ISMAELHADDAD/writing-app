@@ -11,9 +11,9 @@ class AgreementsControllerTest < ActionDispatch::IntegrationTest
       headers: { "Authorization" => "123456" }
 
     json = JSON.parse(response.body)
-    assert_equal json['content'], 'It\'s a test agreement'
-    assert_equal json['isAgree'], true
-    assert_equal json['proposedByAvatarId'], 1
+    assert_equal 'It\'s a test agreement', json['content']
+    assert_equal true, json['isAgree']
+    assert_equal 1, json['proposedByAvatarId']
 
     assert_response :success
   end
