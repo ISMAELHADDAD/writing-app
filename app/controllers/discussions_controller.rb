@@ -1,6 +1,6 @@
 class DiscussionsController < ApplicationController
-  before_action :set_discussion, only: [:show, :destroy, :invite]
-  before_action :authenticate, only: [:create, :destroy, :invite, :verify_invitation]
+  before_action :set_discussion, only: [:show, :destroy, :invite, :fork]
+  before_action :authenticate, only: [:create, :destroy, :invite, :verify_invitation, :fork]
 
   def index
     if params[:user_id]
@@ -108,6 +108,43 @@ class DiscussionsController < ApplicationController
       render :json => {message: "Invitation verified"}, status: :ok
     else
       render :json => {message: "Couldn't verify the invitation"}, status: :unprocessable_entity
+    end
+
+  end
+
+  def fork
+    new_discussion = @discussion.dup
+    new_discussion.update(user_id: current_user.id)
+
+    new_avatar_one = @discussion.avatars.first.dup
+    new_avatar_one.update(user_id: current_user.id, discussion_id: new_discussion.id)
+    new_avatar_two = @discussion.avatars.second.dup
+    new_avatar_two.update(user_id: current_user.id, discussion_id: new_discussion.id)
+
+    @discussion.arguments.each do |argument|
+      new_argument = argument.dup
+      if argument.avatar.id == @discussion.avatars.first.id
+        new_argument.update(avatar_id: new_avatar_one.id, discussion_id: new_discussion.id)
+      else
+        new_argument.update(avatar_id: new_avatar_two.id, discussion_id: new_discussion.id)
+      end
+    end
+
+    @discussion.agreements.each do |agreement|
+      new_agreement = agreement.dup
+      if agreement.avatar.id == @discussion.avatars.first.id
+        new_agreement.update(avatar_id: new_avatar_one.id, discussion_id: new_discussion.id)
+      else
+        new_agreement.update(avatar_id: new_avatar_two.id, discussion_id: new_discussion.id)
+      end
+    end
+
+    participant = Participant.create(discussion: new_discussion, user: current_user, token: nil, verified: true)
+
+    if new_discussion.save && new_avatar_one.save && new_avatar_two.save && participant.save
+      render :json => {message: "Forked with success", id: new_discussion.id}, status: :ok
+    else
+      render :json => {message: "Invalid fork"}, status: :unprocessable_entity
     end
 
   end

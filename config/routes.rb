@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
     post 'invite', to: 'discussions#invite'
     put 'verify_invitation', to: 'discussions#verify_invitation'
+    put 'fork', to: 'discussions#fork'
 
     resources :arguments, only: %i(show create)
     resources :agreements, only: %i(show create update)
