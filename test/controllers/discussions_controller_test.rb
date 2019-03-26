@@ -27,7 +27,30 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     get discussions_url()
 
     json = JSON.parse(response.body)
+    assert_equal 1, json['discussions'].size, "should get 0 discussion"
+    assert_equal 1, json['pages']['current'], "should get current pages 1"
+    assert_equal 1, json['pages']['total'], "should get total pages 1"
+
+    assert_response :success
+  end
+
+  test "should get index on specific user" do
+    get discussions_url(user_id: 1)
+
+    json = JSON.parse(response.body)
     assert_equal 1, json['discussions'].size, "should get 1 discussion"
+    assert_equal 1, json['pages']['current'], "should get current pages 1"
+    assert_equal 1, json['pages']['total'], "should get total pages 1"
+
+    assert_response :success
+  end
+
+  test "should get index on specific user authenticated" do
+    get discussions_url(user_id: 1),
+    headers: { "Authorization" => "123456" }
+
+    json = JSON.parse(response.body)
+    assert_equal 2, json['discussions'].size, "should get 2 discussion"
     assert_equal 1, json['pages']['current'], "should get current pages 1"
     assert_equal 1, json['pages']['total'], "should get total pages 1"
 
@@ -184,7 +207,7 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
       headers: { "Authorization" => "123456" }
 
     assert_match /Forked with success/, JSON.parse(response.body)['message']
-    assert_equal 2, JSON.parse(response.body)['id']
+    assert_equal 3, JSON.parse(response.body)['id']
     assert_response :success
   end
 

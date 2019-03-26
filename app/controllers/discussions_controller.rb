@@ -4,9 +4,13 @@ class DiscussionsController < ApplicationController
 
   def index
     if params[:user_id]
-      @discussions = Discussion.where(user_id: params[:user_id]).page params[:page]
+      if request.headers["Authorization"] && sessionToken_valid?
+        @discussions = Discussion.where(user_id: params[:user_id]).page params[:page]
+      else
+        @discussions = Discussion.where(user_id: params[:user_id], private: false).page params[:page]
+      end
     else
-      @discussions = Discussion.page params[:page]
+      @discussions = Discussion.where(private: false).page params[:page]
     end
   end
 
