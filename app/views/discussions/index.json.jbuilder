@@ -2,6 +2,7 @@ json.discussions @discussions do |discussion|
   json.id discussion.id
   json.topicTitle discussion.topic_title
   json.topicDescription discussion.topic_description
+  json.publishTime discussion.created_at
   json.private discussion.private
   json.owner do
     json.id discussion.user.id
