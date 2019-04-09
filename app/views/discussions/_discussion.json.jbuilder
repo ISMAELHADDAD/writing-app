@@ -2,8 +2,13 @@ json.id discussion.id
 json.topicTitle discussion.topic_title
 json.topicDescription discussion.topic_description
 json.publishTime discussion.created_at
+json.forkedFrom discussion.forked_from
 json.private discussion.private
-json.ownerUserId discussion.user.id
+json.owner do
+  json.id discussion.user.id
+  json.name discussion.user.name
+  json.imageUrl discussion.user.image_url
+end
 
 json.arguments discussion.arguments.each do |argument|
   json.extract! argument, :id, :num, :content
