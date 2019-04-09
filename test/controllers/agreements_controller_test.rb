@@ -1,6 +1,15 @@
 require "test_helper"
 
 class AgreementsControllerTest < ActionDispatch::IntegrationTest
+  test "should get index" do
+    get discussion_agreements_url(discussion_id: 1)
+
+    json = JSON.parse(response.body)
+    assert_equal 4, json.size, "should get 4 agreements"
+
+    assert_response :success
+  end
+  
   test "should get success show on create" do
     post discussion_agreements_url(discussion_id: 1),
       params: {
@@ -13,7 +22,7 @@ class AgreementsControllerTest < ActionDispatch::IntegrationTest
     json = JSON.parse(response.body)
     assert_equal 'It\'s a test agreement', json['content']
     assert_equal true, json['isAgree']
-    assert_equal 1, json['proposedByAvatarId']
+    assert_equal 1, json['proposedByAvatar']['id']
 
     assert_response :success
   end

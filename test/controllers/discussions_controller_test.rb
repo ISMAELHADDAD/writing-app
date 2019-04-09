@@ -10,9 +10,9 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal discussion.id, json['id']
     assert_equal discussion.topic_title, json['topicTitle']
     assert_equal discussion.topic_description, json['topicDescription']
-    assert_equal discussion.user.id, json['ownerUserId']
-    assert_equal discussion.arguments.size, json['arguments'].size
-    assert_equal discussion.agreements.size, json['agreements'].size
+    assert_equal discussion.user.id, json['owner']['id']
+    assert_equal discussion.user.name, json['owner']['name']
+    assert_equal discussion.user.image_url, json['owner']['imageUrl']
     assert_equal 1, json['participants'].size
 
     assert_response :success
@@ -86,13 +86,11 @@ class DiscussionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'test title', json['topicTitle']
     assert_equal 'test description', json['topicDescription']
     assert_equal false, json['private']
-    assert_equal 1, json['ownerUserId'], 'should be id = 1'
+    assert_equal 1, json['owner']['id'], 'should be id = 1'
     assert_equal 'test name avatar one', json['avatarOne']['name']
     assert_equal 'test opinion avatar one', json['avatarOne']['opinion']
     assert_equal 'test name avatar two', json['avatarTwo']['name']
     assert_equal 'test opinion avatar two', json['avatarTwo']['opinion']
-    assert_equal 0, json['arguments'].size, 'has no arguments'
-    assert_equal 0, json['agreements'].size, 'has no agreements'
     assert_equal 1, json['participants'].size, 'should have 1 participant'
 
     assert_response :created

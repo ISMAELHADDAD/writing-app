@@ -1,6 +1,15 @@
 require "test_helper"
 
 class ArgumentsControllerTest < ActionDispatch::IntegrationTest
+  test "should get index" do
+    get discussion_arguments_url(discussion_id: 1)
+
+    json = JSON.parse(response.body)
+    assert_equal 4, json.size, "should get 4 arguments"
+
+    assert_response :success
+  end
+
   test "should get success show on create" do
     post discussion_arguments_url(discussion_id: 1),
       params: {
@@ -11,7 +20,7 @@ class ArgumentsControllerTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(response.body)
     assert_equal 'It\'s a test argument', json['content']
-    assert_equal 1, json['fromAvatarId']
+    assert_equal 1, json['fromAvatar']['id']
 
     assert_response :success
   end

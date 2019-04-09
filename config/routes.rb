@@ -9,8 +9,8 @@ Rails.application.routes.draw do
     put 'verify_invitation', to: 'discussions#verify_invitation'
     put 'fork', to: 'discussions#fork'
 
-    resources :arguments, only: %i(show create)
-    resources :agreements, only: %i(show create update)
+    resources :arguments, only: %i(index show create)
+    resources :agreements, only: %i(index show create update)
     resources :avatar, only: %i() do
       put 'assign', to: 'avatars#assign'
     end
