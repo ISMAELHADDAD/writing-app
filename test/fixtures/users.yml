@@ -5,6 +5,7 @@ user_1:
   created_at: '2019-02-28 11:06:30.354286'
   updated_at: '2019-02-28 11:06:30.354286'
   email: test@test.com
+  image_url: 'src'
   provider: google_oauth
   uid: 12345678910111213
   session_token: 123456
@@ -17,6 +18,7 @@ username_that_already_exists:
   created_at: '2019-02-28 11:06:30.354286'
   updated_at: '2019-02-28 11:06:30.354286'
   email: test@test.com
+  image_url: 'src'
   provider: google_oauth
   uid: 12345678910111213
   session_token: 123456
@@ -28,6 +30,7 @@ user_2:
   created_at: '2019-02-28 11:06:30.354287'
   updated_at: '2019-02-28 11:06:30.354287'
   email: test2@test.com
+  image_url: 'src'
   provider: google_oauth
   uid: 14151617181920212
   session_token: 222222
@@ -39,6 +42,7 @@ user_3:
   created_at: '2019-02-28 11:06:30.354288'
   updated_at: '2019-02-28 11:06:30.354288'
   email: test3@test.com
+  image_url: 'src'
   provider: google_oauth
   uid: 14151617181920213
   session_token: 333333

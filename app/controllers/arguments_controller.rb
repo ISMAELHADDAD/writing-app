@@ -2,6 +2,10 @@ class ArgumentsController < ApplicationController
   before_action :set_argument, only: [:show]
   before_action :authenticate, only: [:create]
 
+  def index
+    @arguments = Argument.where(discussion_id: params[:discussion_id]).order(:created_at) if params[:discussion_id]
+  end
+
   def show
   end
 

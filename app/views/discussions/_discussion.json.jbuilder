@@ -1,22 +1,13 @@
 json.id discussion.id
 json.topicTitle discussion.topic_title
 json.topicDescription discussion.topic_description
+json.publishTime discussion.created_at
+json.forkedFrom discussion.forked_from
 json.private discussion.private
-json.ownerUserId discussion.user.id
-
-json.arguments discussion.arguments.each do |argument|
-  json.extract! argument, :id, :num, :content
-  json.publishTime argument.publish_time
-  json.fromAvatarId argument.avatar.id
-  json.fromAvatarName argument.avatar.name
-end
-
-json.agreements discussion.agreements.each do |agreement|
-  json.extract! agreement, :id, :content
-  json.isAccepted agreement.is_accepted
-  json.isAgree agreement.is_agree
-  json.proposedByAvatarId agreement.avatar.id
-  json.proposedByAvatarName agreement.avatar.name
+json.owner do
+  json.id discussion.user.id
+  json.name discussion.user.name
+  json.imageUrl discussion.user.image_url
 end
 
 json.avatarOne do

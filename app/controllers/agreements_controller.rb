@@ -2,6 +2,10 @@ class AgreementsController < ApplicationController
   before_action :set_agreement, only: [:show, :update]
   before_action :authenticate, only: [:create, :update]
 
+  def index
+    @agreements = Agreement.where(discussion_id: params[:discussion_id]).order(:created_at) if params[:discussion_id]
+  end
+
   def show
   end
 

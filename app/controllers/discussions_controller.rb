@@ -5,12 +5,12 @@ class DiscussionsController < ApplicationController
   def index
     if params[:user_id]
       if request.headers["Authorization"] && sessionToken_valid?
-        @discussions = Discussion.where(user_id: params[:user_id]).page params[:page]
+        @discussions = Discussion.where(user_id: params[:user_id]).order(created_at: :desc).page params[:page]
       else
-        @discussions = Discussion.where(user_id: params[:user_id], private: false).page params[:page]
+        @discussions = Discussion.where(user_id: params[:user_id], private: false).order(created_at: :desc).page params[:page]
       end
     else
-      @discussions = Discussion.where(private: false).page params[:page]
+      @discussions = Discussion.where(private: false).order(created_at: :desc).page params[:page]
     end
   end
 
@@ -119,7 +119,7 @@ class DiscussionsController < ApplicationController
 
   def fork
     new_discussion = @discussion.dup
-    new_discussion.update(user_id: current_user.id)
+    new_discussion.update(user_id: current_user.id, forked_from: @discussion.id)
 
     new_avatar_one = @discussion.avatars.first.dup
     new_avatar_one.update(user_id: current_user.id, discussion_id: new_discussion.id)

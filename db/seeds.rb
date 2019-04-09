@@ -40,3 +40,37 @@ Argument.create( num: 4, content: 'Pero, la utilización de motocicletas en el c
 Agreement.create( content: 'Utilización del carril bus por las motos en diferentes horarios.', is_accepted: true, is_agree: true, discussion: discussion, avatar: Avatar.first )
 Agreement.create( content: 'Mejorar transporte público.', is_accepted: false, is_agree: true, discussion: discussion, avatar: Avatar.first )
 Agreement.create( content: 'Las motos contaminan menos que los coches.', is_accepted: false, is_agree: false, discussion: discussion, avatar: Avatar.first )
+
+################################
+#Fake Users
+images = [
+  'https://react.semantic-ui.com/images/avatar/small/rachel.png',
+  'https://react.semantic-ui.com/images/avatar/small/lindsay.png',
+  'https://react.semantic-ui.com/images/avatar/small/matthew.png',
+  'https://react.semantic-ui.com/images/avatar/small/jenny.jpg'
+]
+tok = 1
+6.times do
+  tok = tok + 1
+  User.create!(
+    name: Faker::Name.name,
+    email: Faker::Internet.free_email,
+    image_url: images.sample,
+    session_token: tok
+  )
+end
+
+users_ids = []
+User.all.each do |u|
+  users_ids.push(u.id)
+end
+
+#Fake discussions
+30.times do
+  Discussion.create!(
+    topic_title: 'Que ataques tiene ' + Faker::Games::Pokemon.name + '?',
+    topic_description: 'Capturado en ' + Faker::Games::Pokemon.location + ', un señor barbudo me dijo que aprenderia ' + Faker::Games::Pokemon.move + '. Es verdad?',
+    user_id: users_ids.sample,
+    private: false
+  )
+end
