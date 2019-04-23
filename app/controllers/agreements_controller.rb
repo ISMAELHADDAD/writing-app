@@ -34,8 +34,11 @@ class AgreementsController < ApplicationController
         content: @agreement.content,
         isAccepted: @agreement.is_accepted,
         isAgree: @agreement.is_agree,
-        proposedByAvatarId: @agreement.avatar.id,
-        proposedByAvatarName: @agreement.avatar.name
+        acceptedAt: @agreement.updated_at,
+        proposedByAvatar: {
+          id: @agreement.avatar.id,
+          name: @agreement.avatar.name
+        }
       }
       ActionCable.server.broadcast 'discussion_room_#' + @agreement.discussion.id.to_s,
         type: 'agreement-propose',
