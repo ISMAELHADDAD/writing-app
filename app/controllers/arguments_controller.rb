@@ -26,8 +26,10 @@ class ArgumentsController < ApplicationController
         num: @argument.num,
         content: @argument.content,
         publishTime: @argument.publish_time,
-        fromAvatarId: @argument.avatar.id,
-        fromAvatarName: @argument.avatar.name
+        fromAvatar: {
+          id: @argument.avatar.id,
+          name: @argument.avatar.name
+        }
       }
       ActionCable.server.broadcast 'discussion_room_#' + @argument.discussion.id.to_s,
         type: 'argument',
