@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_08_152959) do
+ActiveRecord::Schema.define(version: 2019_04_25_132147) do
 
   create_table "agreements", force: :cascade do |t|
     t.text "content"
@@ -57,6 +57,16 @@ ActiveRecord::Schema.define(version: 2019_04_08_152959) do
     t.boolean "private"
     t.integer "forked_from"
     t.index ["user_id"], name: "index_discussions_on_user_id"
+  end
+
+  create_table "general_comments", force: :cascade do |t|
+    t.string "text"
+    t.integer "user_id"
+    t.integer "discussion_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["discussion_id"], name: "index_general_comments_on_discussion_id"
+    t.index ["user_id"], name: "index_general_comments_on_user_id"
   end
 
   create_table "participants", force: :cascade do |t|
