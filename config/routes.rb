@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       put 'assign', to: 'avatars#assign'
     end
     resources :general_comments, only: %i(index show create)
+    resources :criteria, only: %i(index show create)
   end
 
   resources :users, only: %i(show), :defaults => {:format => :json}
