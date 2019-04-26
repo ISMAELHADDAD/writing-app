@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+criterium_1:
+  id: 1
+  text: 'First criterium'
+  discussion_id: 1
+
+criterium_2:
+  id: 2
+  text: 'Second criterium'
+  discussion_id: 1
