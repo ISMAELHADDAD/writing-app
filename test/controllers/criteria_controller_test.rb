@@ -18,7 +18,10 @@ class CriteriaControllerTest < ActionDispatch::IntegrationTest
       headers: { "Authorization" => "123456" }
 
     json = JSON.parse(response.body)
-    assert_equal 'It\'s a test criteria', json['text']
+    assert_equal 'It\'s a test criteria', json['text'], "text should be as expected"
+    assert_equal 3, Discussion.find(1).avatars.first.ratings.count, "should create one rating for avatar one"
+    assert_equal 1, Discussion.find(1).avatars.second.ratings.count, "should create one rating for avatar two"
+    assert_equal 3, json['id']
 
     assert_response :success
   end
