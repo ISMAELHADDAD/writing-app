@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+general_comment_1:
+  id: 1
+  text: 'First comment'
+  user_id: 1
+  discussion_id: 1
+
+general_comment_2:
+  id: 2
+  text: 'Second comment'
+  user_id: 1
+  discussion_id: 1

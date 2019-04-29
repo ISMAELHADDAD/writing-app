@@ -9,6 +9,7 @@ class AvatarTest < ActiveSupport::TestCase
     # Association test
     must have_many(:arguments).dependent(:destroy)
     must have_many(:agreements).dependent(:destroy)
+    must have_many(:ratings).dependent(:destroy)
     must belong_to(:discussion)
     must belong_to(:user)
     # Validation tests
