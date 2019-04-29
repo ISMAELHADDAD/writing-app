@@ -6,6 +6,7 @@ class Discussion < ApplicationRecord
   has_many :arguments, dependent: :destroy
   has_many :avatars, dependent: :destroy
   has_many :general_comments, dependent: :destroy
+  has_many :criteria, dependent: :destroy
 
   has_many :participants, dependent: :destroy
 
