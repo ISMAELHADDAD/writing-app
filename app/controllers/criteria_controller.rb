@@ -20,9 +20,21 @@ class CriteriaController < ApplicationController
     @criterium = Criterium.new(
       text: add_criterium_params[:text],
       discussion_id: add_criterium_params[:discussion_id].to_i
-    ) if Discussion.find(add_criterium_params[:discussion_id])
+    )
 
-    if @criterium && @criterium.save
+    rating_one = Rating.new(
+      rating: 0,
+      avatar_id: d.avatars.first.id,
+      criterium: @criterium
+    )
+
+    rating_two = Rating.new(
+      rating: 0,
+      avatar_id: d.avatars.second.id,
+      criterium: @criterium
+    )
+
+    if @criterium && @criterium.save && rating_one.save && rating_two.save
       render :show, status: :created, resource: @criterium
     else
       render json: { error: 'Invalid data'}, status: :unprocessable_entity

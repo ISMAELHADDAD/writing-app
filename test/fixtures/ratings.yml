@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+rating_1:
+  id: 1
+  rating: 1
+  avatar_id: 1
+  criterium_id: 1
+
+rating_2:
+  id: 2
+  rating: 0
+  avatar_id: 1
+  criterium_id: 2

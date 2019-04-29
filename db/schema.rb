@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_26_091854) do
+ActiveRecord::Schema.define(version: 2019_04_29_101617) do
 
   create_table "agreements", force: :cascade do |t|
     t.text "content"
@@ -86,6 +86,16 @@ ActiveRecord::Schema.define(version: 2019_04_26_091854) do
     t.datetime "updated_at", null: false
     t.index ["discussion_id"], name: "index_participants_on_discussion_id"
     t.index ["user_id"], name: "index_participants_on_user_id"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer "rating"
+    t.integer "avatar_id"
+    t.integer "criterium_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["avatar_id"], name: "index_ratings_on_avatar_id"
+    t.index ["criterium_id"], name: "index_ratings_on_criterium_id"
   end
 
   create_table "users", force: :cascade do |t|
