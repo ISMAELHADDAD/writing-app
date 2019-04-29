@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :agreements, only: %i(index show create update)
     resources :avatar, only: %i() do
       put 'assign', to: 'avatars#assign'
+      resources :ratings, only: %i(index show update)
     end
     resources :general_comments, only: %i(index show create)
     resources :criteria, only: %i(index show create)
